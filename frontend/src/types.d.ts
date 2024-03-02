@@ -9,6 +9,13 @@ export interface ListingReduced{
   image:string
   price:string
 }
+export interface ListingMutation {
+  title: string,
+  image: File | null,
+  price: string,
+  description: string,
+  categoryId: string
+}
 
 
 export interface RegisterMutation {

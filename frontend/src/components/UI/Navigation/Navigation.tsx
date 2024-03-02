@@ -5,6 +5,7 @@ import { useAppSelector } from '../../../app/hooks.ts';
 import UserMenu from './UserMenu.tsx';
 import AnonymousMenu from './AnonymousMenu.tsx';
 import { useState } from 'react';
+import AddListingForm from "../../../features/Listings/components/AddListingForm.tsx";
 
 const style = {
   position: 'absolute',
@@ -52,11 +53,11 @@ const Navigation = () => {
           {user ? <UserMenu user={user} /> : <AnonymousMenu />}
         </Box>
       </Toolbar>
-      {/*<Modal open={open} onClose={handleClose}>*/}
-      {/*  <Box sx={style}>*/}
-      {/*    <AddThreadForm closeHandler={handleClose} />*/}
-      {/*  </Box>*/}
-      {/*</Modal>*/}
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <AddListingForm closeHandler={handleClose} />
+        </Box>
+      </Modal>
     </AppBar>
   );
 };

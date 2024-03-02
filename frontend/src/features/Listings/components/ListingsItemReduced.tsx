@@ -25,7 +25,7 @@ const ListingsItemReduced: FC<ListingReduced> = ({
         <CardMedia
           component="img"
           height="140"
-          image={`${apiURL}${image}`}
+          image={`${apiURL}/${image}`}
           alt={`${title} image`}
         />
         <CardContent>
