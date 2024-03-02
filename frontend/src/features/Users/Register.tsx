@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { RegisterMutation } from '../../types';
+import React, { useState } from "react";
+import { RegisterMutation } from "../../types";
 import {
   Avatar,
   Box,
@@ -9,12 +9,13 @@ import {
   Link,
   TextField,
   Typography,
-} from '@mui/material';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectRegisterError } from './usersSlice';
-import { register } from './usersThunks';
+} from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectRegisterError } from "./usersSlice";
+import { register } from "./usersThunks";
+
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -22,8 +23,10 @@ const Register = () => {
   const navigate = useNavigate();
 
   const [state, setState] = useState<RegisterMutation>({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
+    displayName: "",
+    phoneNumber: "",
   });
 
   const getFieldError = (fieldName: string) => {
@@ -44,11 +47,20 @@ const Register = () => {
 
   const submitFormHandler = async (event: React.FormEvent) => {
     event.preventDefault();
+    const validatePhoneNumber = (value: string) => {
+      const re = /^0\s\d{3}\s\d{3}\s\d{3}$/;
+      return re.test(value);
+    };
+    
+    if (!validatePhoneNumber(state.phoneNumber)) {
+      throw new Error("Wrong phone number");
+    }
+
     try {
       await dispatch(register(state)).unwrap();
-      navigate('/');
+      navigate("/");
     } catch (e) {
-      console.log('Caught on - REGISTRATION SUBMIT - ', e);
+      console.log("Caught on - REGISTRATION SUBMIT - ", e);
     }
   };
 
@@ -57,12 +69,12 @@ const Register = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -77,8 +89,10 @@ const Register = () => {
                 value={state.username}
                 onChange={inputChangeHandler}
                 autoComplete="new-username"
-                error={Boolean(getFieldError('username'))}
-                helperText={getFieldError('username')}
+                error={Boolean(getFieldError("username"))}
+                helperText={getFieldError("username")}
+                required
+                fullWidth
               />
             </Grid>
             <Grid item xs={12}>
@@ -89,8 +103,37 @@ const Register = () => {
                 value={state.password}
                 onChange={inputChangeHandler}
                 autoComplete="new-password"
-                error={Boolean(getFieldError('password'))}
-                helperText={getFieldError('password')}
+                error={Boolean(getFieldError("password"))}
+                helperText={getFieldError("password")}
+                required
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="displayName"
+                label="Display Name"
+                type="text"
+                value={state.displayName}
+                onChange={inputChangeHandler}
+                error={Boolean(getFieldError("displayName"))}
+                helperText={getFieldError("displayName")}
+                required
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="phoneNumber"
+                label="Phone Number"
+                type="tel"
+                value={state.phoneNumber}
+                onChange={inputChangeHandler}
+                error={Boolean(getFieldError("phoneNumber"))}
+                helperText={"Phone must be in format: 0 XXX YYY ZZZ"}
+                required
+                fullWidth
+                placeholder="0555123421"
               />
             </Grid>
           </Grid>
