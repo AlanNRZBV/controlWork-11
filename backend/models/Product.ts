@@ -37,7 +37,13 @@ const ProductSchema= new Schema ({
   },
   price:{
     type: Number,
-    required: true
+    required: true,
+    validate:{
+      validator:  (value: number)=>{
+        return value > 0
+      },
+      message:'Price must be greater than zero'
+    }
   },
   image:{
     type: String,
