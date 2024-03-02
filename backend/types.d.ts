@@ -1,4 +1,13 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
+
+export interface ProductData {
+  userId:Types.ObjectId,
+  categoryId:Types.ObjectId,
+  title: string,
+  description: string,
+  image:string | null,
+  price: number
+}
 
 export interface UserFields {
   username: string;
