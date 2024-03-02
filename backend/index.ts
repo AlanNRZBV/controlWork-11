@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import config from './config';
 import usersRouter from './routers/users';
 import categoriesRouter from './routers/categories';
-import productsRouter from './routers/products';
+import productsRouter from './routers/listings';
 
 const app = express();
 const port = 8000;

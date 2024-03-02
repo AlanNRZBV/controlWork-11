@@ -3,7 +3,7 @@ import config from './config';
 import User from './models/User';
 import * as crypto from 'crypto';
 import Category from './models/Category';
-import Product from './models/Product';
+import Listing from './models/Listing';
 
 const dropCollection = async (
   db: mongoose.Connection,
@@ -67,7 +67,7 @@ const run = async () => {
     const home = await Category.findOne({ title: 'Home' });
     const other = await Category.findOne({ title: 'Other' });
 
-    await Product.create([
+    await Listing.create([
       {
         title: 'Default Car Title',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
