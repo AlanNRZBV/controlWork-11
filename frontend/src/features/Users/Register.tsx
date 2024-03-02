@@ -51,7 +51,7 @@ const Register = () => {
       const re = /^0\s\d{3}\s\d{3}\s\d{3}$/;
       return re.test(value);
     };
-    
+
     if (!validatePhoneNumber(state.phoneNumber)) {
       throw new Error("Wrong phone number");
     }

@@ -1,3 +1,9 @@
+export interface Category {
+  _id: string,
+  title: string
+}
+
+
 export interface RegisterMutation {
   username: string;
   password: string;
@@ -11,7 +17,7 @@ export interface LoginMutation {
 }
 export interface User {
   _id: string;
-  username: string;
+  displayName: string;
   token: string;
 }
 

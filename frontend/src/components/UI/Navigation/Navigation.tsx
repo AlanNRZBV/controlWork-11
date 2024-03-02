@@ -44,7 +44,7 @@ const Navigation = () => {
               variant="contained"
               sx={{ mr: 2 }}
             >
-              Add thread
+              Add listing
             </Button>
           ) : (
             <></>
