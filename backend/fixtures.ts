@@ -3,7 +3,7 @@ import config from './config';
 import User from './models/User';
 import * as crypto from 'crypto';
 import Category from './models/Category';
-import Product from './models/ Product';
+import Product from './models/Product';
 
 const dropCollection = async (
   db: mongoose.Connection,
