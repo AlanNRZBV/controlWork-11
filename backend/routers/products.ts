@@ -74,4 +74,28 @@ productsRouter.post(
   },
 );
 
+productsRouter.delete('/', auth, async(req:RequestWithUser, res,next)=>{
+  try{
+    const product = await Product.findById(req.body._id)
+    if(!product){
+      return res.send({error:'No product found'})
+    }
+    console.log({productUserId: product.userId, reqUserId: req.user?._id})
+
+    if(product.userId && !product?.userId.equals(req.user?._id)){
+      return res.send({error:'You can remove only your listings'})
+    }
+
+    await Product.deleteOne({_id:req.body._id})
+
+    return res.send({message: 'Listing successfully removed'})
+  }catch (e) {
+    if (e instanceof mongoose.Error) {
+      return res.status(422).send({ error: e.message });
+    }
+    next(e);
+  }
+})
+
+
 export default productsRouter;
