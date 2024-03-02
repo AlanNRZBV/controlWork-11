@@ -1,14 +1,18 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axiosApi from "../../axiosApi.ts";
-import { ListingMutation, ListingReduced } from "../../types";
-import { RootState } from "../../app/store.ts";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axiosApi from '../../axiosApi.ts';
+import {
+  ListingExtendedResponse,
+  ListingMutation,
+  ListingReduced,
+} from '../../types';
+import { RootState } from '../../app/store.ts';
 
-export const fetchListings = createAsyncThunk("listings/fetch", async () => {
+export const fetchListings = createAsyncThunk('listings/fetch', async () => {
   try {
-    const response = await axiosApi.get<ListingReduced[]>("/listings");
+    const response = await axiosApi.get<ListingReduced[]>('/listings');
     return response.data;
   } catch (e) {
-    console.log("Caught on try - FETCH LISTINGS - ", e);
+    console.log('Caught on try - FETCH LISTINGS - ', e);
   }
 });
 
@@ -34,5 +38,20 @@ export const submitListing = createAsyncThunk<
     return response.data;
   } catch (e) {
     console.log("Caught on try - SUBMIT LISTING -", e);
+  }
+});
+
+export const fetchSingleListing = createAsyncThunk<
+  ListingExtendedResponse | undefined,
+  string
+>('listings/fetchSingle', async (arg) => {
+  try {
+    const response = await axiosApi.get<ListingExtendedResponse>(
+      `/listings?listingById=${arg}`,
+    );
+      return response.data
+
+  } catch (e) {
+    console.log('Caught on try - FETCH SINGLE THREAD - ', e);
   }
 });

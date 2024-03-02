@@ -1,11 +1,12 @@
 import { AppBar, Box, Button, Modal, Toolbar, Typography } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { selectUser } from '../../../features/Users/usersSlice.ts';
-import { useAppSelector } from '../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks.ts';
 import UserMenu from './UserMenu.tsx';
 import AnonymousMenu from './AnonymousMenu.tsx';
 import { useState } from 'react';
 import AddListingForm from "../../../features/Listings/components/AddListingForm.tsx";
+import { toggleView } from '../../../features/Listings/listingsSlice.ts';
 
 const style = {
   position: 'absolute',
@@ -21,14 +22,20 @@ const style = {
 
 const Navigation = () => {
   const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch()
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const clickHandler=()=>{
+    dispatch(toggleView());
+  }
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
         <Typography
+          onClick={clickHandler}
           to="/"
           component={NavLink}
           variant="h6"

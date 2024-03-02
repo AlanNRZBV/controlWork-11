@@ -9,6 +9,50 @@ export interface ListingReduced{
   image:string
   price:string
 }
+
+export interface ListingExtended{
+  title: string,
+  image:string,
+  price:string,
+  description:string,
+  displayName: string,
+  phoneNumber:string
+  categoryName: string
+}
+// export interface ListingExtended{
+//   title: string,
+//   image:string,
+//   price:string,
+//   description:string,
+//   sellerData: SellerData,
+//   category: CategoryData
+// }
+
+type SellerData = {
+  displayName:string,
+  phoneNumber:string
+}
+type CategoryData = {
+  _id:string,
+  title:string
+}
+// export interface SellerData{
+//   displayName:string,
+//   phoneNumber:string
+// }
+// export interface CategoryData{
+//   _id:string,
+//   title:string
+// }
+
+export interface ListingExtendedResponse {
+    title: string,
+  image:string,
+  price:string,
+  description:string,
+  categoryId: CategoryData,
+  userId: SellerData
+}
 export interface ListingMutation {
   title: string,
   image: File | null,

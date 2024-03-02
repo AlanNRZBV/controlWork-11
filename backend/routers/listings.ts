@@ -17,23 +17,53 @@ listingsRouter.get('/', async (req, res, next) => {
       }
       return res.send(products);
     }
-    const value = req.query.category;
 
-    const listings = await Listing.find({categoryId: value}).populate([{
-      path: 'userId',
-      select: 'displayName -_id phoneNumber',
-    },
-      {
-        path:'categoryId',
-        select:'title'
+    if ('listingById' in req.query) {
+      const value = req.query.listingById;
+
+      console.log('value check ', value)
+      const listing = await Listing.findOne({ _id: value }).populate([
+        {
+          path: 'userId',
+          select: 'displayName -_id phoneNumber',
+        },
+        {
+          path: 'categoryId',
+          select: 'title',
+        },
+      ]);
+
+      console.log('response check ', listing)
+
+      if (!listing) {
+        return res.send({ message: 'Something went wrong', listing: listing });
       }
-    ]);
 
-    if (!listings) {
-      return res.send({ message: 'Something went wrong', listings: listings});
+      return res.send(listing);
+    } else if ('listingByCategory' in req.query) {
+      const value = req.query.listingByCategory;
+      const listings = await Listing.find({ categoryId: value }).populate([
+        {
+          path: 'userId',
+          select: 'displayName -_id phoneNumber',
+        },
+        {
+          path: 'categoryId',
+          select: 'title',
+        },
+      ]);
+
+      if (!listings) {
+        return res.send({
+          message: 'Something went wrong',
+          listings: listings,
+        });
+      }
+
+      return res.send(listings);
     }
 
-    return res.send(listings);
+    return res.send({message:'Something went wrong'})
   } catch (e) {
     next(e);
   }
@@ -45,11 +75,10 @@ listingsRouter.post(
   imagesUpload.single('image'),
   async (req: RequestWithUser, res, next) => {
     try {
+      const category = await Category.findById(req.body.categoryId);
 
-      const category = await Category.findById(req.body.categoryId)
-
-      if(!category){
-        return res.send({error:'Category not found'})
+      if (!category) {
+        return res.send({ error: 'Category not found' });
       }
 
       const productData: ProductData = {
@@ -74,28 +103,27 @@ listingsRouter.post(
   },
 );
 
-listingsRouter.delete('/', auth, async(req:RequestWithUser, res, next)=>{
-  try{
-    const product = await Listing.findById(req.body._id)
-    if(!product){
-      return res.send({error:'No product found'})
+listingsRouter.delete('/', auth, async (req: RequestWithUser, res, next) => {
+  try {
+    const product = await Listing.findById(req.body._id);
+    if (!product) {
+      return res.send({ error: 'No product found' });
     }
-    console.log({productUserId: product.userId, reqUserId: req.user?._id})
+    console.log({ productUserId: product.userId, reqUserId: req.user?._id });
 
-    if(product.userId && !product?.userId.equals(req.user?._id)){
-      return res.send({error:'You can remove only your listings'})
+    if (product.userId && !product?.userId.equals(req.user?._id)) {
+      return res.send({ error: 'You can remove only your listings' });
     }
 
-    await Listing.deleteOne({_id:req.body._id})
+    await Listing.deleteOne({ _id: req.body._id });
 
-    return res.send({message: 'Listing successfully removed'})
-  }catch (e) {
+    return res.send({ message: 'Listing successfully removed' });
+  } catch (e) {
     if (e instanceof mongoose.Error) {
       return res.status(422).send({ error: e.message });
     }
     next(e);
   }
-})
-
+});
 
 export default listingsRouter;
