@@ -3,6 +3,13 @@ export interface Category {
   title: string
 }
 
+export interface ListingReduced{
+  _id:string,
+  title:string,
+  image:string
+  price:string
+}
+
 
 export interface RegisterMutation {
   username: string;

@@ -13,6 +13,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import { usersReducer } from '../features/Users/usersSlice.ts';
 import {sidebarReducer} from "../features/SideBar/sidebarSlice.ts";
+import {listingsReducer} from "../features/Listings/listingsSlice.ts";
 const usersPersistConfig = {
   key: 'forum:users',
   storage: storage,
@@ -21,6 +22,7 @@ const usersPersistConfig = {
 
 const rootReducer = combineReducers({
   sidebar:sidebarReducer,
+  listings:listingsReducer,
   users: persistReducer(usersPersistConfig, usersReducer),
 });
 

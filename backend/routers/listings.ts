@@ -6,20 +6,20 @@ import auth, { RequestWithUser } from '../middleware/auth';
 import { ProductData } from '../types';
 import Category from '../models/Category';
 
-const productsRouter = Router();
+const listingsRouter = Router();
 
-productsRouter.get('/', async (req, res, next) => {
+listingsRouter.get('/', async (req, res, next) => {
   try {
     if (Object.keys(req.query).length === 0) {
       const products = await Listing.find();
       if (!products) {
-        return res.send({ error: 'No products were identified' });
+        return res.send({ error: 'No listings were identified' });
       }
       return res.send(products);
     }
     const value = req.query.category;
 
-    const products = await Listing.find({categoryId: value}).populate([{
+    const listings = await Listing.find({categoryId: value}).populate([{
       path: 'userId',
       select: 'displayName -_id phoneNumber',
     },
@@ -29,17 +29,17 @@ productsRouter.get('/', async (req, res, next) => {
       }
     ]);
 
-    if (!products) {
-      return res.send({ message: 'Something went wrong', products});
+    if (!listings) {
+      return res.send({ message: 'Something went wrong', listings: listings});
     }
 
-    return res.send(products);
+    return res.send(listings);
   } catch (e) {
     next(e);
   }
 });
 
-productsRouter.post(
+listingsRouter.post(
   '/',
   auth,
   imagesUpload.single('image'),
@@ -74,7 +74,7 @@ productsRouter.post(
   },
 );
 
-productsRouter.delete('/', auth, async(req:RequestWithUser, res,next)=>{
+listingsRouter.delete('/', auth, async(req:RequestWithUser, res, next)=>{
   try{
     const product = await Listing.findById(req.body._id)
     if(!product){
@@ -98,4 +98,4 @@ productsRouter.delete('/', auth, async(req:RequestWithUser, res,next)=>{
 })
 
 
-export default productsRouter;
+export default listingsRouter;
