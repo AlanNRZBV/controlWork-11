@@ -43,8 +43,7 @@ const Listings = () => {
           ))
         )
       ) : (
-        <ListingExtended
-        />
+        <ListingExtended />
       )}
     </Box>
   );

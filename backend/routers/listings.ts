@@ -21,19 +21,16 @@ listingsRouter.get('/', async (req, res, next) => {
     if ('listingById' in req.query) {
       const value = req.query.listingById;
 
-      console.log('value check ', value)
       const listing = await Listing.findOne({ _id: value }).populate([
         {
           path: 'userId',
-          select: 'displayName -_id phoneNumber',
+          select: 'displayName phoneNumber',
         },
         {
           path: 'categoryId',
           select: 'title',
         },
       ]);
-
-      console.log('response check ', listing)
 
       if (!listing) {
         return res.send({ message: 'Something went wrong', listing: listing });
@@ -63,7 +60,7 @@ listingsRouter.get('/', async (req, res, next) => {
       return res.send(listings);
     }
 
-    return res.send({message:'Something went wrong'})
+    return res.send({ message: 'Something went wrong' });
   } catch (e) {
     next(e);
   }
@@ -103,19 +100,18 @@ listingsRouter.post(
   },
 );
 
-listingsRouter.delete('/', auth, async (req: RequestWithUser, res, next) => {
+listingsRouter.delete('/:id', auth, async (req: RequestWithUser, res, next) => {
   try {
-    const product = await Listing.findById(req.body._id);
-    if (!product) {
-      return res.send({ error: 'No product found' });
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+      return res.send({ error: 'No listing found' });
     }
-    console.log({ productUserId: product.userId, reqUserId: req.user?._id });
 
-    if (product.userId && !product?.userId.equals(req.user?._id)) {
+    if (listing.userId && !listing?.userId.equals(req.user?._id)) {
       return res.send({ error: 'You can remove only your listings' });
     }
 
-    await Listing.deleteOne({ _id: req.body._id });
+    await Listing.deleteOne({ _id: req.params.id });
 
     return res.send({ message: 'Listing successfully removed' });
   } catch (e) {

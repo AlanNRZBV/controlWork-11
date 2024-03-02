@@ -2,9 +2,9 @@ import mongoose, { Types } from 'mongoose';
 import User from './User';
 import Category from './Category';
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
-const ProductSchema= new Schema ({
+const ProductSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -16,7 +16,7 @@ const ProductSchema= new Schema ({
       message: 'User does not exist!',
     },
   },
-  categoryId:{
+  categoryId: {
     type: Schema.Types.ObjectId,
     ref: 'Category',
     validate: {
@@ -27,29 +27,29 @@ const ProductSchema= new Schema ({
       message: 'Category does not exist!',
     },
   },
-  title:{
+  title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
-  price:{
+  price: {
     type: Number,
     required: true,
-    validate:{
-      validator:  (value: number)=>{
-        return value > 0
+    validate: {
+      validator: (value: number) => {
+        return value > 0;
       },
-      message:'Price must be greater than zero'
-    }
+      message: 'Price must be greater than zero',
+    },
   },
-  image:{
+  image: {
     type: String,
-    required:true
+    required: true,
   },
-})
+});
 
 const Listing = mongoose.model('Listing', ProductSchema);
 

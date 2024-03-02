@@ -1,19 +1,19 @@
 import { Model, Types } from 'mongoose';
 
 export interface ProductData {
-  userId:Types.ObjectId,
-  categoryId:Types.ObjectId,
-  title: string,
-  description: string,
-  image:string | null,
-  price: number
+  userId: Types.ObjectId;
+  categoryId: Types.ObjectId;
+  title: string;
+  description: string;
+  image: string | null;
+  price: number;
 }
 
 export interface UserFields {
   username: string;
   password: string;
-  displayName: string,
-  phoneNumber: string,
+  displayName: string;
+  phoneNumber: string;
   token: string;
 }
 

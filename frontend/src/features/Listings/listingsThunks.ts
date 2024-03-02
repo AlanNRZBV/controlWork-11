@@ -20,7 +20,7 @@ export const submitListing = createAsyncThunk<
   null,
   ListingMutation,
   { state: RootState }
->("listings/submit", async (arg, { getState }) => {
+>('listings/submit', async (arg, { getState }) => {
   try {
     const token = getState().users.user?.token;
     const formData = new FormData();
@@ -37,7 +37,7 @@ export const submitListing = createAsyncThunk<
     });
     return response.data;
   } catch (e) {
-    console.log("Caught on try - SUBMIT LISTING -", e);
+    console.log('Caught on try - SUBMIT LISTING -', e);
   }
 });
 
@@ -49,9 +49,24 @@ export const fetchSingleListing = createAsyncThunk<
     const response = await axiosApi.get<ListingExtendedResponse>(
       `/listings?listingById=${arg}`,
     );
-      return response.data
-
+    return response.data;
   } catch (e) {
     console.log('Caught on try - FETCH SINGLE THREAD - ', e);
+  }
+});
+
+export const deleteListing = createAsyncThunk<
+  null,
+  string,
+  { state: RootState }
+>('listings/delete', async (arg, { getState }) => {
+  try {
+    const token = getState().users.user?.token;
+    const response = await axiosApi.delete(`/listings/${arg}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (e) {
+    console.log('Caught on try - DELETE LISTING - ', e);
   }
 });

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Navigation from '../components/UI/Navigation/Navigation.tsx';
-import {Box} from "@mui/material";
-import SideBar from "../features/SideBar/SideBar.tsx";
+import { Box } from '@mui/material';
+import SideBar from '../features/SideBar/SideBar.tsx';
 
 const Layout = () => {
   return (
@@ -15,7 +15,7 @@ const Layout = () => {
           gridTemplateRows="1fr"
           gridTemplateColumns="auto 1fr"
           gap="200px"
-          sx={{gridTemplateAreas:`'sidebar body'`}}
+          sx={{ gridTemplateAreas: `'sidebar body'` }}
         >
           <SideBar />
           <Outlet />

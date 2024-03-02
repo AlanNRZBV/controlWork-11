@@ -30,14 +30,14 @@ interface ListingsState {
 const initialState: ListingsState = {
   listingsReduced: [],
   listingExtended: {
+    userId: '',
     description: '',
-   displayName:'',
-    phoneNumber:'',
+    displayName: '',
+    phoneNumber: '',
     title: '',
     price: '',
     image: '',
-    categoryName:''
-
+    categoryName: '',
   },
   isReducedLoading: false,
   isExtendedLoading: false,
@@ -75,16 +75,16 @@ export const listingsSlice = createSlice({
     builder.addCase(
       fetchSingleListing.fulfilled,
       (state, { payload: listing }) => {
-        console.log('slice ', listing)
         if (listing) {
           state.listingExtended = {
+            userId: listing.userId._id,
             image: listing.image,
             title: listing.title,
             description: listing.description,
             price: listing.price,
-              phoneNumber: listing.userId.phoneNumber,
-              displayName: listing.userId.displayName,
-            categoryName: listing.categoryId.title
+            phoneNumber: listing.userId.phoneNumber,
+            displayName: listing.userId.displayName,
+            categoryName: listing.categoryId.title,
           };
         }
         state.isExtendedLoading = false;

@@ -14,7 +14,6 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cors());
 
-
 app.use('/users', usersRouter);
 app.use('/categories', categoriesRouter);
 app.use('/listings', listingsRouter);
